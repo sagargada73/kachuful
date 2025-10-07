@@ -30,10 +30,11 @@ class CloudGameHistoryService {
       // Try server first with a timeout, then fall back to cache to avoid hanging UI
       QuerySnapshot querySnapshot;
       try {
+        // Allow more time for slow networks but still fall back to cache if it takes too long
         querySnapshot = await _userGamesCollection!
             .limit(50)
             .get()
-            .timeout(const Duration(seconds: 3));
+            .timeout(const Duration(seconds: 10));
       } on Exception catch (e) {
         print(
             'History server fetch failed or timed out, falling back to cache: $e');
@@ -80,9 +81,15 @@ class CloudGameHistoryService {
       // Add client timestamp (ms since epoch) so UI can order immediately
       gameData['clientTimestamp'] = DateTime.now().millisecondsSinceEpoch;
 
-      await _userGamesCollection!
-          .add(gameData)
-          .timeout(const Duration(seconds: 3));
+      // Do not aggressively timeout writes; allow Firestore offline queueing and slow networks.
+      try {
+        await _userGamesCollection!.add(gameData);
+      } on Exception catch (e) {
+        // One quick retry for transient failures
+        print('Save failed once, retrying: $e');
+        await Future.delayed(const Duration(milliseconds: 500));
+        await _userGamesCollection!.add(gameData);
+      }
       print('Game saved to Firestore successfully');
     } catch (e) {
       print('Error saving game to Firestore (continuing without crash): $e');
