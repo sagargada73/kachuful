@@ -1,8 +1,8 @@
 # KachuFul
 
 - Web app: https://kachuful-88b5c.web.app
-- Download Android APK: https://github.com/<your-username>/kachuful/releases/latest
-  - Direct link after you publish a release (example): https://github.com/<your-username>/kachuful/releases/download/v1.0.0/app-release.apk
+- Download Android APK: https://github.com/sagargada73/kachuful/releases/latest
+  - Direct link after you publish a release (example): https://github.com/sagargada73/kachuful/releases/download/v1.0.0/app-release.apk
 
 Build locally:
 - Android APK (release): flutter build apk --release
