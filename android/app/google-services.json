@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "855206596279",
+    "project_id": "kachuful-88b5c",
+    "storage_bucket": "kachuful-88b5c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855206596279:android:c635a01a40687e44b54732",
+        "android_client_info": {
+          "package_name": "com.example.kachuful"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoM4S5kBzD2x9soKRoe_Wdl9dQHvxtpmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
