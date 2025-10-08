@@ -81,7 +81,7 @@ jobs:
 
       - name: Deploy to Firebase Hosting
         if: ${{ env.FIREBASE_TOKEN != '' }}
-        run: firebase deploy --only hosting --non-interactive
+        run: firebase deploy --only hosting --project kachuful-88b5c --non-interactive
 
       - name: Skip Hosting deploy (no FIREBASE_TOKEN)
         if: ${{ env.FIREBASE_TOKEN == '' }}
