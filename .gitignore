@@ -107,8 +107,9 @@ coverage/
 # Firebase
 # Keep client-side Firebase config in repo for CI builds
 !lib/firebase_options.dart
-google-services.json
-GoogleService-Info.plist
+!android/app/google-services.json
+!ios/Runner/GoogleService-Info.plist
+.firebase/
 .firebase/
 .firebaserc
 
