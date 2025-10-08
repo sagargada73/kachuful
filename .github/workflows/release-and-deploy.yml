@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      FIREBASE_PROJECT_ID: kachuful-88b5c
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,10 +80,20 @@ jobs:
       - name: Install Firebase Tools
         run: npm install -g firebase-tools
 
-      - name: Deploy to Firebase Hosting
-        if: ${{ env.FIREBASE_TOKEN != '' }}
-        run: firebase deploy --only hosting --project kachuful-88b5c --non-interactive
+      - name: Set up Firebase Service Account credentials (preferred)
+        if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
+        run: |
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > "${{ runner.temp }}/gcp-creds.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ runner.temp }}/gcp-creds.json" >> $GITHUB_ENV
 
-      - name: Skip Hosting deploy (no FIREBASE_TOKEN)
-        if: ${{ env.FIREBASE_TOKEN == '' }}
-        run: echo "FIREBASE_TOKEN not set; skipping Firebase Hosting deploy. Add repo secret FIREBASE_TOKEN to enable."
+      - name: Deploy to Firebase Hosting (service account)
+        if: ${{ env.GOOGLE_APPLICATION_CREDENTIALS != '' }}
+        run: firebase deploy --only hosting --project $FIREBASE_PROJECT_ID --non-interactive
+
+      - name: Deploy to Firebase Hosting (FIREBASE_TOKEN fallback)
+        if: ${{ env.GOOGLE_APPLICATION_CREDENTIALS == '' && env.FIREBASE_TOKEN != '' }}
+        run: firebase deploy --only hosting --project $FIREBASE_PROJECT_ID --non-interactive
+
+      - name: Skip Hosting deploy (no credentials)
+        if: ${{ env.GOOGLE_APPLICATION_CREDENTIALS == '' && env.FIREBASE_TOKEN == '' }}
+        run: echo "No Firebase credentials set; set FIREBASE_SERVICE_ACCOUNT (recommended) or FIREBASE_TOKEN to enable Hosting deploy."
