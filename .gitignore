@@ -105,7 +105,8 @@ coverage/
 !**/ios/**/default.perspectivev3
 
 # Firebase
-firebase_options.dart
+# Keep client-side Firebase config in repo for CI builds
+!lib/firebase_options.dart
 google-services.json
 GoogleService-Info.plist
 .firebase/
