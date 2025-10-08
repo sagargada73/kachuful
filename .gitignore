@@ -110,8 +110,6 @@ coverage/
 !android/app/google-services.json
 !ios/Runner/GoogleService-Info.plist
 .firebase/
-.firebase/
-.firebaserc
 
 # Environment variables
 .env
